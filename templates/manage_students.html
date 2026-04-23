@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students - Admin Panel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav {
+            background-color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-btn {
+            background: white;
+            color: #667eea;
+            padding: 12px 25px;
+            text-decoration: none;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-info {
+            background: #17a2b8;
+        }
+        .btn-info:hover {
+            background: #138496;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #667eea;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .delete-form {
+            display: inline;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        /* Search Bar Styles */
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .search-form {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+        }
+        .search-group {
+            flex: 1;
+        }
+        .search-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+            white-space: nowrap;
+        }
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+        .quick-search {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .quick-search-btn {
+            background: #f8f9fa;
+            color: #667eea;
+            padding: 8px 16px;
+            border: 1px solid #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .quick-search-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* Search Results */
+        .search-results {
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Student Management</h1>
+        <p>Admin Panel - Manage Student Records</p>
+    </div>
+    
+    <div class="nav">
+        <div class="nav-container">
+            <a href="{% url 'admin_dashboard' %}" class="nav-btn">Dashboard</a>
+            <a href="{% url 'manage_students' %}" class="nav-btn">Manage Students</a>
+            <a href="{% url 'manage_academic' %}" class="nav-btn">Academic Records</a>
+            <a href="{% url 'manage_attendance' %}" class="nav-btn">Attendance</a>
+            <a href="{% url 'manage_fees' %}" class="nav-btn">Fee Management</a>
+            <a href="{% url 'manage_library' %}" class="nav-btn">Library & Placement</a>
+            <a href="{% url 'manage_disciplinary' %}" class="nav-btn">Disciplinary</a>
+            <a href="{% url 'admin_search_student' %}" class="nav-btn">Search Student</a>
+            <a href="{% url 'admin_logout' %}" class="nav-btn logout-btn">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Search Bar Section -->
+        <div class="search-section">
+            <h2>🔍 Search Student Records</h2>
+            <form method="get" action="{% url 'manage_students' %}" class="search-form">
+                <div class="search-group">
+                    <label for="search_roll_no">Search by Roll Number:</label>
+                    <input type="text" 
+                           id="search_roll_no" 
+                           name="search_roll_no" 
+                           class="search-input" 
+                           placeholder="Enter Roll Number (e.g., 21BCE1001)"
+                           value="{{ request.GET.search_roll_no|default:'' }}">
+                </div>
+                <button type="submit" class="search-btn">
+                    Search Student
+                </button>
+            </form>
+            
+            <!-- Quick Search Options -->
+            <!-- <div class="quick-search">
+                <small>Quick filters:</small>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('')">Show All</button>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('21BCE')">BCE Students</button>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('21BME')">BME Students</button>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('21BIT')">BIT Students</button>
+            </div> -->
+
+            <!-- Search Results -->
+            {% if request.GET.search_roll_no %}
+            <div class="search-results">
+                <h3>Search Results for "{{ request.GET.search_roll_no }}"</h3>
+                {% if search_results %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Year</th>
+                                <th>Semester</th>
+                                <th>Joined Year</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in search_results %}
+                            <tr>
+                                <td><strong>{{ student.Roll_No }}</strong></td>
+                                <td>{{ student.Name }}</td>
+                                <td>{{ student.Dept }}</td>
+                                <td>{{ student.Year }}</td>
+                                <td>{{ student.Semester }}</td>
+                                <td>{{ student.Joined_Year }}</td>
+                                <td class="action-buttons">
+                                    <a href="{% url 'admin_student_details' student.Roll_No %}" class="btn" style="padding: 8px 12px;">View Details</a>
+                                    <form method="post" class="delete-form" onsubmit="return confirm('Are you sure you want to delete {{ student.Roll_No }}?')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="roll_no" value="{{ student.Roll_No }}">
+                                        <button type="submit" name="delete_student" class="btn btn-danger" style="padding: 8px 12px;">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="no-results">
+                        <p>❌ No students found matching "{{ request.GET.search_roll_no }}"</p>
+                        <p><small>Try searching with a different roll number or check the spelling.</small></p>
+                    </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Add Student Form -->
+        <div class="section">
+            <h2>Add New Student</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="Roll_No">Roll Number:</label>
+                        <input type="text" id="Roll_No" name="Roll_No" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Name">Full Name:</label>
+                        <input type="text" id="Name" name="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Dept">Department:</label>
+                        <input type="text" id="Dept" name="Dept" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Year">Year:</label>
+                        <input type="number" id="Year" name="Year" min="1" max="4" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Semester">Semester:</label>
+                        <input type="number" id="Semester" name="Semester" min="1" max="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Joined_Year">Joined Year:</label>
+                        <input type="number" id="Joined_Year" name="Joined_Year" min="2000" max="2030" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Passed_Out_Year">Passed Out Year (Optional):</label>
+                        <input type="number" id="Passed_Out_Year" name="Passed_Out_Year" min="2000" max="2030">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="text" id="password" name="password" value="student123">
+                    </div>
+                </div>
+                <button type="submit" name="add_student" class="btn btn-success">Add Student</button>
+            </form>
+        </div>
+
+        <!-- All Students List -->
+        <div class="section">
+            <h2>All Students ({{ students|length }})</h2>
+            {% if students and not request.GET.search_roll_no %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Semester</th>
+                        <th>Joined Year</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td><strong>{{ student.Roll_No }}</strong></td>
+                        <td>{{ student.Name }}</td>
+                        <td>{{ student.Dept }}</td>
+                        <td>{{ student.Year }}</td>
+                        <td>{{ student.Semester }}</td>
+                        <td>{{ student.Joined_Year }}</td>
+                        <td class="action-buttons">
+                            <a href="{% url 'admin_student_details' student.Roll_No %}" class="btn" style="padding: 8px 12px;">View</a>
+                            <form method="post" class="delete-form" onsubmit="return confirm('Are you sure you want to delete {{ student.Roll_No }}?')">
+                                {% csrf_token %}
+                                <input type="hidden" name="roll_no" value="{{ student.Roll_No }}">
+                                <button type="submit" name="delete_student" class="btn btn-danger" style="padding: 8px 12px;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% elif not request.GET.search_roll_no %}
+            <p style="text-align: center; color: #666; padding: 20px;">No students found in the database.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Function to set search value for quick filters
+        function setSearchValue(value) {
+            document.getElementById('search_roll_no').value = value;
+            document.querySelector('.search-form').submit();
+        }
+
+        // Auto-focus on search input when page loads if there's a search term
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search_roll_no');
+            if (searchInput.value) {
+                searchInput.focus();
+            }
+        });
+
+        // Clear search when clicking on "Show All"
+        function clearSearch() {
+            document.getElementById('search_roll_no').value = '';
+            document.querySelector('.search-form').submit();
+        }
+    </script>
+</body>
+</html>

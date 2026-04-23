@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details - {{ student.Roll_No }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav {
+            background-color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-btn {
+            background: white;
+            color: #667eea;
+            padding: 12px 25px;
+            text-decoration: none;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .student-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .no-data {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 40px;
+        }
+        .back-btn {
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .back-btn:hover {
+            background: #545b62;
+        }
+        .status-paid {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .status-partial {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .gpa-badge {
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        .attendance-good {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .attendance-poor {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Student Details</h1>
+        <p>Admin Panel - Complete Student Information</p>
+    </div>
+    
+    <div class="nav">
+        <div class="nav-container">
+            <a href="{% url 'admin_dashboard' %}" class="nav-btn">Dashboard</a>
+            <a href="{% url 'manage_students' %}" class="nav-btn">Manage Students</a>
+            <a href="{% url 'manage_academic' %}" class="nav-btn">Academic Records</a>
+            <a href="{% url 'manage_attendance' %}" class="nav-btn">Attendance</a>
+            <a href="{% url 'manage_fees' %}" class="nav-btn">Fee Management</a>
+            <a href="{% url 'manage_library' %}" class="nav-btn">Library & Placement</a>
+            <a href="{% url 'manage_disciplinary' %}" class="nav-btn">Disciplinary</a>
+            <a href="{% url 'admin_search_student' %}" class="nav-btn">Search Student</a>
+            <a href="{% url 'admin_logout' %}" class="nav-btn logout-btn">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="{% url 'admin_search_student' %}" class="back-btn">← Back to Search</a>
+        
+        <!-- Student Basic Information -->
+        <div class="student-header">
+            <h2>{{ student.Roll_No }} - {{ student.Name }}</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Department:</div>
+                    {{ student.Dept }}
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Year:</div>
+                    {{ student.Year }}
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Semester:</div>
+                    {{ student.Semester }}
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Joined Year:</div>
+                    {{ student.Joined_Year }}
+                </div>
+                {% if student.Passed_Out_Year %}
+                <div class="info-item">
+                    <div class="info-label">Passed Out Year:</div>
+                    {{ student.Passed_Out_Year }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Academic Performance -->
+        <div class="section">
+            <h3>Academic Performance</h3>
+            {% if academic_data %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Semester</th>
+                            <th>Thesis Work</th>
+                            <th>Seminar</th>
+                            <th>Internship</th>
+                            <th>Project Presentation</th>
+                            <th>SGPA</th>
+                            <th>CGPA</th>
+                            <th>Backlogs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in academic_data %}
+                        <tr>
+                            <td><strong>{{ record.Semester }}</strong></td>
+                            <td>{{ record.Thesis_Work|default:"-" }}</td>
+                            <td>{{ record.Seminar|default:"-" }}</td>
+                            <td>{{ record.Internship|default:"-" }}</td>
+                            <td>{{ record.Project_Presentation|default:"-" }}</td>
+                            <td>
+                                {% if record.SGPA %}
+                                    <span class="gpa-badge">{{ record.SGPA }}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if record.CGPA %}
+                                    <span class="gpa-badge">{{ record.CGPA }}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ record.Backlogs }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-data">No academic records found</div>
+            {% endif %}
+        </div>
+
+        <!-- Attendance Records -->
+        <div class="section">
+            <h3>Attendance Records</h3>
+            {% if attendance_data %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Semester</th>
+                            <th>Attendance %</th>
+                            <th>Absent Days</th>
+                            <th>Medical Leaves</th>
+                            <th>Behaviour Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in attendance_data %}
+                        <tr>
+                            <td>{{ record.Semester }}</td>
+                            <td class="{% if record.Attendance_Percent >= 75 %}attendance-good{% else %}attendance-poor{% endif %}">
+                                {{ record.Attendance_Percent }}%
+                            </td>
+                            <td>{{ record.Absent_Days }}</td>
+                            <td>{{ record.Medical_Leaves }}</td>
+                            <td>{{ record.Behaviour_Rating }}/10</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-data">No attendance records found</div>
+            {% endif %}
+        </div>
+
+        <!-- Fee Details -->
+        <div class="section">
+            <h3>Fee Details</h3>
+            {% if fee_data %}
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Total Fee:</div>
+                        ₹{{ fee_data.Total_Fee }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Fee Paid:</div>
+                        ₹{{ fee_data.Fee_Paid }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Fee Due:</div>
+                        ₹{{ fee_data.Fee_Due }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Status:</div>
+                        <span class="status-{{ fee_data.Fee_Status|lower }}">{{ fee_data.Fee_Status }}</span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-data">No fee records found</div>
+            {% endif %}
+        </div>
+
+        <!-- Activity & Placement -->
+        <div class="section">
+            <h3>Activity & Placement Details</h3>
+            {% if activity_data %}
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Library Hours:</div>
+                        {{ activity_data.Library_Hours }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Books Borrowed:</div>
+                        {{ activity_data.Books_Borrowed }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Mock Test Score:</div>
+                        {{ activity_data.Mock_Test_Score|default:"-" }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Placement Attendance:</div>
+                        {{ activity_data.Placement_Attendance }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Internship Status:</div>
+                        {{ activity_data.Internship_Status }}
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Placement Status:</div>
+                        {{ activity_data.Placement_Status }}
+                    </div>
+                    {% if activity_data.Company_Name %}
+                    <div class="info-item">
+                        <div class="info-label">Company Name:</div>
+                        {{ activity_data.Company_Name }}
+                    </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="no-data">No activity records found</div>
+            {% endif %}
+        </div>
+
+        <!-- Disciplinary Records -->
+        <div class="section">
+            <h3>Disciplinary Records</h3>
+            {% if disciplinary_data %}
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Action Taken:</div>
+                        {% if disciplinary_data.Action_Taken %}
+                            <span style="color: #dc3545; font-weight: bold;">Yes</span>
+                        {% else %}
+                            <span style="color: #28a745; font-weight: bold;">No</span>
+                        {% endif %}
+                    </div>
+                    {% if disciplinary_data.Description %}
+                    <div class="info-item" style="grid-column: 1 / -1;">
+                        <div class="info-label">Description:</div>
+                        {{ disciplinary_data.Description }}
+                    </div>
+                    {% endif %}
+                    <div class="info-item">
+                        <div class="info-label">Date:</div>
+                        {{ disciplinary_data.Date }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-data">No disciplinary records found</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

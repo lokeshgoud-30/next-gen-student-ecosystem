@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Student Management System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav {
+            background-color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-btn {
+            background: white;
+            color: #667eea;
+            padding: 12px 25px;
+            text-decoration: none;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .dashboard {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .welcome-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        .management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .management-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .management-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+        .management-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .card-student { border-left: 4px solid #667eea; }
+        .card-academic { border-left: 4px solid #28a745; }
+        .card-attendance { border-left: 4px solid #ffc107; }
+        .card-fee { border-left: 4px solid #dc3545; }
+        .card-library { border-left: 4px solid #17a2b8; }
+        .card-disciplinary { border-left: 4px solid #6f42c1; }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <p>Student Management System Administration Panel</p>
+    </div>
+    
+<div class="nav">
+    <div class="nav-container">
+        <a href="{% url 'admin_dashboard' %}" class="nav-btn">Dashboard</a>
+        <a href="{% url 'manage_students' %}" class="nav-btn">Manage Students</a>
+        <a href="{% url 'manage_academic' %}" class="nav-btn">Academic Records</a>
+        <a href="{% url 'manage_attendance' %}" class="nav-btn">Attendance</a>
+        <a href="{% url 'manage_fees' %}" class="nav-btn">Fee Management</a>
+        <a href="{% url 'manage_library' %}" class="nav-btn">Library & Placement</a>
+        <a href="{% url 'manage_disciplinary' %}" class="nav-btn">Disciplinary</a>
+        <a href="{% url 'admin_search_student' %}" class="nav-btn">Search Student</a>
+        <a href="{% url 'analytics_portal' %}" class="nav-btn">Analytics Portal</a>
+        <a href="{% url 'admin_logout' %}" class="nav-btn logout-btn">Logout</a>
+    </div>
+</div>
+
+{% block content %}
+<div class="dashboard">
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <h2>Welcome, Administrator 👋</h2>
+    <p>You have full access to manage all student records and system data.</p>
+
+</div>
+{% endblock %}
+
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">{{ total_students }}</div>
+                <div>Total Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number">{{ total_academic_records }}</div>
+                <div>Academic Records</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-number">{{ total_attendance_records }}</div>
+                <div>Attendance Records</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-number">{{ total_fee_records }}</div>
+                <div>Fee Records</div>
+            </div>
+        </div>
+        
+        <h2 style="text-align: center; margin-bottom: 20px;">Management Modules</h2>
+        <div class="management-grid">
+            <a href="{% url 'manage_students' %}" class="management-card card-student">
+                <div class="management-icon">👥</div>
+                <h3>Student Management</h3>
+                <p>Add, edit, and manage student profiles</p>
+            </a>
+            
+            <a href="{% url 'manage_academic' %}" class="management-card card-academic">
+                <div class="management-icon">📚</div>
+                <h3>Academic Records</h3>
+                <p>Manage grades, SGPA, CGPA, and subjects</p>
+            </a>
+            
+            <a href="{% url 'manage_attendance' %}" class="management-card card-attendance">
+                <div class="management-icon">📅</div>
+                <h3>Attendance Management</h3>
+                <p>Track and manage student attendance</p>
+            </a>
+            
+            <a href="{% url 'manage_fees' %}" class="management-card card-fee">
+                <div class="management-icon">💰</div>
+                <h3>Fee Management</h3>
+                <p>Manage fee records and payments</p>
+            </a>
+            
+            <a href="{% url 'manage_library' %}" class="management-card card-library">
+                <div class="management-icon">📖</div>
+                <h3>Library & Placement</h3>
+                <p>Manage library usage and placement data</p>
+            </a>
+            
+            <a href="{% url 'manage_disciplinary' %}" class="management-card card-disciplinary">
+                <div class="management-icon">⚖️</div>
+                <h3>Disciplinary Records</h3>
+                <p>Manage disciplinary actions and records</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

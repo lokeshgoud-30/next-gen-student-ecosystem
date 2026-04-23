@@ -1,0 +1,61 @@
+{% extends 'admin_dashboard.html' %}
+{% block content %}
+
+<div style="padding: 30px;">
+    
+    <h2>{{ title }}</h2>
+    {% if message %}
+        <p style="color: gray; margin-bottom: 20px;">{{ message }}</p>
+    {% endif %}
+    <hr><br>
+
+    {% if students %}
+        <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; text-align:center;">
+            <tr style="background:#e9efff; font-weight:bold;">
+                <th>Roll No</th>
+                <th>Department</th>
+                <th>Semester</th>
+
+                {% if students.0.CGPA is not None %}
+                    <th>CGPA</th>
+                {% endif %}
+
+                {% if students.0.Attendance_Percent is not None %}
+                    <th>Attendance %</th>
+                {% endif %}
+
+                {% if students.0.Backlogs is not None %}
+                    <th>Backlogs</th>
+                {% endif %}
+
+                {% if students.0.Fee_Due is not None %}
+                    <th>Fee Due</th>
+                {% endif %}
+
+                {% if students.0.Placement_Status is not None %}
+                    <th>Placement</th>
+                {% endif %}
+            </tr>
+
+            {% for s in students %}
+            <tr>
+                <td>{{ s.Roll_No }}</td>
+                <td>{{ s.Dept }}</td>
+                <td>{{ s.Semester }}</td>
+
+                {% if s.CGPA %}<td>{{ s.CGPA }}</td>{% endif %}
+                {% if s.Attendance_Percent %}<td style="color:red;">{{ s.Attendance_Percent }}%</td>{% endif %}
+                {% if s.Backlogs %}<td style="color:red; font-weight:bold;">{{ s.Backlogs }}</td>{% endif %}
+                {% if s.Fee_Due %}<td style="color:red;">₹{{ s.Fee_Due }}</td>{% endif %}
+                {% if s.Placement_Status %}<td>{{ s.Placement_Status }}</td>{% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <h4 style="color:red;">🚫 No Records Found</h4>
+    {% endif %}
+
+</div>
+
+{% endblock %}

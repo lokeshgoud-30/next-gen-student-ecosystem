@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Academic Records - Admin Panel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav {
+            background-color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-btn {
+            background: white;
+            color: #667eea;
+            padding: 12px 25px;
+            text-decoration: none;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .subject-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .subject-item label {
+            font-size: 12px;
+            color: #666;
+        }
+        .btn {
+            background: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #218838;
+        }
+        .btn-info {
+            background: #17a2b8;
+        }
+        .btn-info:hover {
+            background: #138496;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #667eea;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Search Section Styles */
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .search-form {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+        }
+        .search-group {
+            flex: 1;
+        }
+        .search-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+            white-space: nowrap;
+        }
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+        .clear-search {
+            background: #6c757d;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .clear-search:hover {
+            background: #545b62;
+        }
+        .quick-search {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .quick-search-btn {
+            background: #f8f9fa;
+            color: #667eea;
+            padding: 8px 16px;
+            border: 1px solid #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .quick-search-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* Search Results */
+        .search-results {
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .result-count {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Academic Records Management</h1>
+        <p>Admin Panel - Manage Student Academic Performance</p>
+    </div>
+    
+    <div class="nav">
+        <div class="nav-container">
+            <a href="{% url 'admin_dashboard' %}" class="nav-btn">Dashboard</a>
+            <a href="{% url 'manage_students' %}" class="nav-btn">Manage Students</a>
+            <a href="{% url 'manage_academic' %}" class="nav-btn">Academic Records</a>
+            <a href="{% url 'manage_attendance' %}" class="nav-btn">Attendance</a>
+            <a href="{% url 'manage_fees' %}" class="nav-btn">Fee Management</a>
+            <a href="{% url 'manage_library' %}" class="nav-btn">Library & Placement</a>
+            <a href="{% url 'manage_disciplinary' %}" class="nav-btn">Disciplinary</a>
+            <a href="{% url 'admin_search_student' %}" class="nav-btn">Search Student</a>
+            <a href="{% url 'admin_logout' %}" class="nav-btn logout-btn">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h2>🔍 Search Academic Records</h2>
+            <form method="get" action="{% url 'manage_academic' %}" class="search-form">
+                <div class="search-group">
+                    <label for="search_roll_no">Search by Roll Number:</label>
+                    <input type="text" 
+                           id="search_roll_no" 
+                           name="search_roll_no" 
+                           class="search-input" 
+                           placeholder="Enter Roll Number (e.g., 21BCE1001)"
+                           value="{{ request.GET.search_roll_no|default:'' }}">
+                </div>
+                <button type="submit" class="search-btn">
+                    Search Records
+                </button>
+                {% if request.GET.search_roll_no %}
+                <a href="{% url 'manage_academic' %}" class="clear-search">
+                    Clear Search
+                </a>
+                {% endif %}
+            </form>
+            
+            <!-- Quick Search Options -->
+            <!-- <div class="quick-search">
+                <small>Quick filters:</small>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('')">Show All</button>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('21BCE')">BCE Students</button>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('21BME')">BME Students</button>
+                <button type="button" class="quick-search-btn" onclick="setSearchValue('21BIT')">BIT Students</button>
+            </div> -->
+
+            <!-- Search Results -->
+            {% if request.GET.search_roll_no %}
+            <div class="search-results">
+                <h3>Search Results for "{{ request.GET.search_roll_no }}"</h3>
+                <div class="result-count">
+                    Found {{ search_results|length }} record(s)
+                </div>
+                {% if search_results %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Semester</th>
+                                <th>SGPA</th>
+                                <th>CGPA</th>
+                                <th>Backlogs</th>
+                                <th>Department</th>
+                                <th>Thesis</th>
+                                <th>Seminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in search_results %}
+                            <tr>
+                                <td><strong>{{ record.Roll_No }}</strong></td>
+                                <td>{{ record.Semester }}</td>
+                                <td>{{ record.SGPA|default:"-" }}</td>
+                                <td>{{ record.CGPA|default:"-" }}</td>
+                                <td>{{ record.Backlogs }}</td>
+                                <td>{{ record.Dept }}</td>
+                                <td>{{ record.Thesis_Work|default:"-" }}</td>
+                                <td>{{ record.Seminar|default:"-" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="no-results">
+                        <p>❌ No academic records found matching "{{ request.GET.search_roll_no }}"</p>
+                        <p><small>Try searching with a different roll number or check if the student exists.</small></p>
+                    </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Add/Update Academic Record</h2>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="Roll_No">Roll Number:</label>
+                        <input type="text" id="Roll_No" name="Roll_No" required 
+                               value="{{ request.GET.search_roll_no|default:'' }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="Semester">Semester:</label>
+                        <input type="number" id="Semester" name="Semester" min="1" max="8" required>
+                    </div>
+                </div>
+
+                <h3>Academic Performance</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="Thesis_Work">Thesis Work (Marks):</label>
+                        <input type="number" id="Thesis_Work" name="Thesis_Work" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="Seminar">Seminar (Marks):</label>
+                        <input type="number" id="Seminar" name="Seminar" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="Internship">Internship (Marks):</label>
+                        <input type="number" id="Internship" name="Internship" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="Project_Presentation">Project Presentation (Marks):</label>
+                        <input type="number" id="Project_Presentation" name="Project_Presentation" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SGPA">SGPA:</label>
+                        <input type="number" step="0.01" id="SGPA" name="SGPA" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="CGPA">CGPA:</label>
+                        <input type="number" step="0.01" id="CGPA" name="CGPA" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="Backlogs">Backlogs:</label>
+                        <input type="number" id="Backlogs" name="Backlogs" value="0" min="0">
+                    </div>
+                </div>
+
+                <h3>Subject Marks (0-100)</h3>
+                <div class="subject-grid">
+                    <div class="subject-item">
+                        <label for="AI_Applications">AI Applications:</label>
+                        <input type="number" id="AI_Applications" name="AI_Applications" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Cloud_Computing">Cloud Computing:</label>
+                        <input type="number" id="Cloud_Computing" name="Cloud_Computing" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Embedded_Systems">Embedded Systems:</label>
+                        <input type="number" id="Embedded_Systems" name="Embedded_Systems" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Cybersecurity">Cybersecurity:</label>
+                        <input type="number" id="Cybersecurity" name="Cybersecurity" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Deep_Learning">Deep Learning:</label>
+                        <input type="number" id="Deep_Learning" name="Deep_Learning" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="IoT_Systems">IoT Systems:</label>
+                        <input type="number" id="IoT_Systems" name="IoT_Systems" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Big_DataAnalytics">Big Data Analytics:</label>
+                        <input type="number" id="Big_DataAnalytics" name="Big_DataAnalytics" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Optimization_Techniques">Optimization Techniques:</label>
+                        <input type="number" id="Optimization_Techniques" name="Optimization_Techniques" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Advanced_Algorithms">Advanced Algorithms:</label>
+                        <input type="number" id="Advanced_Algorithms" name="Advanced_Algorithms" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Machine_Learning">Machine Learning:</label>
+                        <input type="number" id="Machine_Learning" name="Machine_Learning" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Data_Analytics">Data Analytics:</label>
+                        <input type="number" id="Data_Analytics" name="Data_Analytics" min="0" max="100">
+                    </div>
+                    <div class="subject-item">
+                        <label for="Research_Methodology">Research Methodology:</label>
+                        <input type="number" id="Research_Methodology" name="Research_Methodology" min="0" max="100">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Save Academic Record</button>
+            </form>
+        </div>
+
+        <!-- All Academic Records List -->
+        <div class="section">
+            <h2>All Academic Records ({{ academic_records|length }})</h2>
+            {% if academic_records and not request.GET.search_roll_no %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Semester</th>
+                        <th>SGPA</th>
+                        <th>CGPA</th>
+                        <th>Backlogs</th>
+                        <th>Department</th>
+                        <th>Thesis</th>
+                        <th>Seminar</th>
+                        <th>Internship</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in academic_records %}
+                    <tr>
+                        <td>{{ record.Roll_No }}</td>
+                        <td>{{ record.Semester }}</td>
+                        <td>{{ record.SGPA|default:"-" }}</td>
+                        <td>{{ record.CGPA|default:"-" }}</td>
+                        <td>{{ record.Backlogs }}</td>
+                        <td>{{ record.Dept }}</td>
+                        <td>{{ record.Thesis_Work|default:"-" }}</td>
+                        <td>{{ record.Seminar|default:"-" }}</td>
+                        <td>{{ record.Internship|default:"-" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% elif not request.GET.search_roll_no %}
+            <p style="text-align: center; color: #666; padding: 20px;">No academic records found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Function to set search value for quick filters
+        function setSearchValue(value) {
+            document.getElementById('search_roll_no').value = value;
+            document.querySelector('.search-form').submit();
+        }
+
+        // Auto-focus on search input when page loads if there's a search term
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search_roll_no');
+            if (searchInput.value) {
+                searchInput.focus();
+            }
+            
+            // If there's a search term in URL, pre-fill the Roll No in the form
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchRollNo = urlParams.get('search_roll_no');
+            if (searchRollNo) {
+                document.getElementById('Roll_No').value = searchRollNo;
+            }
+        });
+    </script>
+</body>
+</html>

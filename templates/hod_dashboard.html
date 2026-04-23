@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Dashboard - Student Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav {
+            background-color: #495057;
+            padding: 10px 20px;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .nav a:hover {
+            background-color: #6c757d;
+        }
+        .container {
+            padding: 20px;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        .quick-actions {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .action-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .action-btn:hover {
+            background-color: #0056b3;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>HOD Dashboard</h1>
+        <div>
+            <span>Welcome, HOD</span>
+            <a href="{% url 'hod_logout' %}" class="action-btn logout-btn" style="margin-left: 15px;">Logout</a>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <a href="{% url 'hod_dashboard' %}">Dashboard</a>
+        <a href="{% url 'enter_roll_no' %}">View Student</a>
+    </div>
+    
+    <div class="container">
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Total Students</h3>
+                <div class="stat-number">{{ total_students }}</div>
+                <p>Registered in system</p>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Departments</h3>
+                <div class="stat-number">
+                    {{ total_departments|default:0 }}
+                </div>
+                <p>Multiple departments</p>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Academic Records</h3>
+                <div class="stat-number">
+                    {% with academic_count=total_students|default:0 %}
+                        {{ academic_count }}
+                    {% endwith %}
+                </div>
+                <p>Performance data</p>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <h2>Quick Actions</h2>
+            <a href="{% url 'enter_roll_no' %}" class="action-btn">View Student Details</a>
+            <!-- <a href="#" class="action-btn">Academic Reports</a>
+            <a href="#" class="action-btn">Attendance Reports</a>
+            <a href="#" class="action-btn">Fee Reports</a> -->
+        </div>
+        
+        <div class="quick-actions" style="margin-top: 20px;">
+            <h2>System Information</h2>
+            <p><strong>Current Session:</strong> HOD Panel</p>
+            <p><strong>Database Status:</strong> Connected</p>
+            <p><strong>Last Updated:</strong> {% now "F j, Y, g:i a" %}</p>
+        </div>
+    </div>
+</body>
+</html>

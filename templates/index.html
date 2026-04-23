@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Smart Education System</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@600&family=Lobster+Two:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/static/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/static/css/style.css" rel="stylesheet">
+
+    <!-- FAQ Custom Styles -->
+    <style>
+        .faq-section {
+            background: var(--light);
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h1 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            padding: 20px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: #f9f9f9;
+            color: var(--primary);
+        }
+
+        .faq-question.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .faq-number {
+            display: inline-block;
+            background: var(--light);
+            color: var(--primary);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: 600;
+        }
+
+        .faq-question.active .faq-number {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+            color: var(--primary);
+        }
+
+        .faq-question.active .faq-icon {
+            transform: rotate(180deg);
+            color: white;
+        }
+
+        .faq-answer {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        .faq-answer.show {
+            padding: 20px 30px;
+            max-height: 1000px;
+        }
+
+        .faq-answer p {
+            margin: 0;
+            color: #555;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .faq-category {
+            margin-bottom: 30px;
+        }
+
+        .faq-category h3 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            font-size: 1.5rem;
+        }
+
+        /* Search Bar */
+        .faq-search {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .faq-search input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .faq-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(254, 93, 55, 0.1);
+        }
+
+        .faq-search i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .faq-question {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+
+            .faq-answer.show {
+                padding: 15px 20px;
+            }
+
+            .section-title h1 {
+                font-size: 2rem;
+            }
+
+            .faq-number {
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                margin-right: 10px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Animation for FAQ items */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .faq-item {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Expand/Collapse All Buttons */
+        .faq-controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-controls button {
+            margin: 0 5px;
+            padding: 8px 20px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .faq-controls button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+        {% block nav %}
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand-lg bg-white navbar-light fixed-top px-4 px-lg-5 py-lg-0">
+            <a href="index.html" class="navbar-brand">
+                <h1 class="m-0 text-primary"><i class="fa fa-book-reader me-3"></i>SMART EDUCATION</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link">About Us</a>
+                    <a href="#faq" class="nav-item nav-link">FAQs</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Login</a>
+                        <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+                            <a href="{% url 'hod_login' %}" class="dropdown-item">HOD</a>
+                            <a href="{% url 'admin_login' %}" class="dropdown-item">ADMIN</a>
+                            <a href="{% url 'student_login' %}" class="dropdown-item">STUDENT</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+        {% endblock %}
+
+        {% block body %}
+        <!-- Carousel Start -->
+        <div class="container-fluid p-0 mb-5">
+            <div class="owl-carousel header-carousel position-relative">
+                <div class="owl-carousel-item position-relative">
+                    <img class="img-fluid" src="/static/img/background_image.jpg" alt="">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(0, 0, 0, .2);">
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-10 col-lg-8">
+                                    <h1 class="display-2 text-white animated slideInDown mb-4">AIDRIVEN ADAPTIVE ANALYTICS FOR SMART EDUCATIONAL SYSTEM</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div> 
+        {% endblock %}
+
+        {% block about %}
+        <!-- About Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-12 wow fadeInUp text-center" data-wow-delay="0.1s">
+                        <h1 class="mb-4">About AI-Driven Adaptive Analytics for Smart Educational System</h1>
+                        <p class="mb-4">
+                            The <strong>AI-Driven Adaptive Analytics for Smart Educational System</strong> is designed to revolutionize the way students learn and educators teach. 
+                            By leveraging advanced artificial intelligence and real-time data analytics, our system adapts learning experiences to each student's unique needs, 
+                            ensuring personalized progress and measurable outcomes.
+                        </p>
+                        <p class="mb-4">
+                            Our platform intelligently analyzes learning patterns, predicts performance trends, and provides actionable insights for educators to enhance 
+                            curriculum delivery. With AI-powered adaptive algorithms, we aim to create a smarter, data-driven, and more engaging educational ecosystem.
+                        </p>
+                        <div class="row g-4 justify-content-center">
+                            <div class="col-sm-6 col-md-4">
+                                <a class="btn btn-primary rounded-pill py-3 px-5 w-100" href="#">Read More</a>
+                            </div>
+                            <div class="col-sm-6 col-md-4 d-flex align-items-center justify-content-center">
+                                <div class="text-center">
+                                    <h6 class="text-primary mb-1">Dr. Jhon Doe</h6>
+                                    <small>Project Lead & AI Researcher</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- About End -->
+        {% endblock %}
+
+        <!-- FAQ Section Start -->
+        <div class="container-xxl faq-section" id="faq">
+            <div class="container">
+                <div class="section-title">
+                    <h1>Student Awareness & FAQs</h1>
+                    <p>Get answers to common questions about the credit system, exams, attendance, and more.</p>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="faq-search">
+                    <input type="text" id="faqSearch" placeholder="Search for questions or keywords...">
+                    <i class="fas fa-search"></i>
+                </div>
+
+                <!-- Controls -->
+                <div class="faq-controls">
+                    <button id="expandAll">Expand All</button>
+                    <button id="collapseAll">Collapse All</button>
+                </div>
+
+                <!-- FAQ Items Container -->
+                <div class="faq-container" id="faqContainer">
+                    <!-- FAQ items will be dynamically added here -->
+                </div>
+
+                <!-- No Results Message -->
+                <div class="no-results" id="noResults">
+                    <i class="fas fa-search fa-3x mb-3"></i>
+                    <h4>No matching questions found</h4>
+                    <p>Try searching with different keywords</p>
+                </div>
+            </div>
+        </div>
+        <!-- FAQ Section End -->
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/lib/wow/wow.min.js"></script>
+        <script src="/static/lib/easing/easing.min.js"></script>
+        <script src="/static/lib/waypoints/waypoints.min.js"></script>
+        <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="/static/js/main.js"></script>
+
+        <!-- FAQ JavaScript -->
+        <script>
+            // FAQ Data
+            const faqData = [
+                {
+                    question: "What is the credit system?",
+                    answer: "Each subject has fixed credits. To be promoted to the next year, students must earn the minimum required credits. If a subject is failed, its credits must be earned by clearing the backlog."
+                },
+                {
+                    question: "How is SGPA calculated?",
+                    answer: "SGPA is calculated by taking the weighted average of grade points scored in all subjects of a semester. It reflects performance for that specific semester."
+                },
+                {
+                    question: "How is CGPA calculated?",
+                    answer: "CGPA is the overall average of all SGPAs across semesters. It shows the student's complete academic performance."
+                },
+                {
+                    question: "What happens if I get a backlog?",
+                    answer: "A failed subject becomes a backlog. Students must attend the supplementary exam and pass it to earn the missing credits."
+                },
+                {
+                    question: "How many backlogs are allowed?",
+                    answer: "Students may continue to the next semester with backlogs, but too many can affect promotion rules and delay graduation."
+                },
+                {
+                    question: "Can I attend the next semester if I have backlogs?",
+                    answer: "Yes, you can attend classes for the next semester, but backlogs must be cleared through supplementary exams."
+                },
+                {
+                    question: "What is a supplementary exam?",
+                    answer: "It is a special exam conducted for students who failed a subject in the regular exam, giving another chance to clear it."
+                },
+                {
+                    question: "What happens if my attendance is below 75%?",
+                    answer: "Students with less than 75% attendance may not be allowed to attend semester exams unless they apply for condonation."
+                },
+                {
+                    question: "What is condonation?",
+                    answer: "Condonation is special approval given to students who have slightly low attendance, allowing them to write exams after paying a fine."
+                },
+                {
+                    question: "Do OD (On Duty) days count as attendance?",
+                    answer: "Yes, OD days for events like seminars, sports, or placements are counted as attendance if properly approved by the department."
+                },
+                {
+                    question: "How can I improve my attendance?",
+                    answer: "By attending all upcoming classes regularly and avoiding unnecessary leaves, you can quickly improve your attendance percentage."
+                },
+                {
+                    question: "How many internal exams are conducted?",
+                    answer: "Generally, two internal exams are conducted each semester along with assignments and lab evaluations."
+                },
+                {
+                    question: "How much do internals contribute to final marks?",
+                    answer: "Internal exams carry a fixed weightage and are added to external marks to determine the final score in a subject."
+                },
+                {
+                    question: "What is the passing criteria?",
+                    answer: "Students must score the minimum required marks in both internal and external exams to pass a subject."
+                },
+                {
+                    question: "What is revaluation?",
+                    answer: "Revaluation is the process where a student's exam paper is checked again if they believe marks were wrongly awarded."
+                },
+                {
+                    question: "What happens if I have fee dues?",
+                    answer: "Students with fee dues may face restrictions like not receiving the hall ticket or not being allowed to attend exams."
+                },
+                {
+                    question: "How do I apply for bonafide or study certificates?",
+                    answer: "Students can apply through the college office or online portal by submitting a simple request or application form."
+                },
+                {
+                    question: "Can I attend placements with backlogs?",
+                    answer: "Many companies require no active backlogs. Some may allow one backlog, but it depends on their recruitment policy."
+                },
+                {
+                    question: "What is the minimum CGPA required for placements?",
+                    answer: "Most companies require a CGPA of 6.0 or above, but higher CGPA gives better eligibility and opportunities."
+                },
+                {
+                    question: "How can I prepare for campus placements?",
+                    answer: "Prepare by practicing aptitude, improving technical or coding skills, enhancing communication, and attending mock interviews."
+                }
+            ];
+
+            // Initialize FAQ items
+            document.addEventListener('DOMContentLoaded', function() {
+                const faqContainer = document.getElementById('faqContainer');
+                const searchInput = document.getElementById('faqSearch');
+                const noResults = document.getElementById('noResults');
+                const expandAllBtn = document.getElementById('expandAll');
+                const collapseAllBtn = document.getElementById('collapseAll');
+                
+                // Render FAQ items
+                function renderFAQs(data) {
+                    faqContainer.innerHTML = '';
+                    if (data.length === 0) {
+                        noResults.style.display = 'block';
+                        return;
+                    }
+                    
+                    noResults.style.display = 'none';
+                    
+                    data.forEach((item, index) => {
+                        const faqItem = document.createElement('div');
+                        faqItem.className = 'faq-item';
+                        faqItem.innerHTML = `
+                            <button class="faq-question">
+                                <div>
+                                    <span class="faq-number">${index + 1}</span>
+                                    ${item.question}
+                                </div>
+                                <i class="fas fa-chevron-down faq-icon"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>${item.answer}</p>
+                            </div>
+                        `;
+                        
+                        const questionBtn = faqItem.querySelector('.faq-question');
+                        const answerDiv = faqItem.querySelector('.faq-answer');
+                        
+                        questionBtn.addEventListener('click', function() {
+                            const isActive = this.classList.contains('active');
+                            
+                            // Close all other FAQs if not searching
+                            if (!isActive && !searchInput.value) {
+                                document.querySelectorAll('.faq-question.active').forEach(activeBtn => {
+                                    activeBtn.classList.remove('active');
+                                    activeBtn.nextElementSibling.classList.remove('show');
+                                });
+                            }
+                            
+                            // Toggle current FAQ
+                            this.classList.toggle('active');
+                            answerDiv.classList.toggle('show');
+                        });
+                        
+                        faqContainer.appendChild(faqItem);
+                        
+                        // Add animation delay
+                        faqItem.style.animationDelay = `${index * 0.05}s`;
+                    });
+                }
+                
+                // Initial render
+                renderFAQs(faqData);
+                
+                // Search functionality
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    
+                    if (searchTerm === '') {
+                        renderFAQs(faqData);
+                        return;
+                    }
+                    
+                    const filteredData = faqData.filter(item => 
+                        item.question.toLowerCase().includes(searchTerm) || 
+                        item.answer.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    renderFAQs(filteredData);
+                });
+                
+                // Expand All functionality
+                expandAllBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.faq-question').forEach(btn => {
+                        btn.classList.add('active');
+                        btn.nextElementSibling.classList.add('show');
+                    });
+                });
+                
+                // Collapse All functionality
+                collapseAllBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.faq-question').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.nextElementSibling.classList.remove('show');
+                    });
+                });
+                
+                // Clear search on escape key
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        this.value = '';
+                        renderFAQs(faqData);
+                    }
+                });
+                
+                // Smooth scroll to FAQ section when clicking nav link
+                document.querySelectorAll('a[href="#faq"]').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const faqSection = document.getElementById('faq');
+                        if (faqSection) {
+                            window.scrollTo({
+                                top: faqSection.offsetTop - 100,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
